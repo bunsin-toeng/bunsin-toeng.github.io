@@ -269,7 +269,7 @@ document.getElementById("rows").innerHTML = ITEMS.map(i => {
       <div class="pct-n">${i.pct}%</div>
       <div class="pbar"><div class="pfill" style="width:${i.pct}%;background:${st.bar}"></div></div>
     </td>
-    <td class="w-remark">${esc(i.remark)}</td>
+    <td class="w-remark">${esc(i.remark).replace(/&lt;br&gt;/g, "<br>")}</td>
     <td class="w-team">${esc(i.team)}</td>
     <td class="w-left calc"><span class="${dl.cls}">${dl.text}</span></td>
   </tr>`;
