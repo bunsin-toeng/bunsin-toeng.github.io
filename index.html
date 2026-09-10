@@ -3,277 +3,345 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>SAP × ITD — Project Task Processing</title>
+<title>AI Banking Agent — PPCBank Internal AI Contest</title>
+<meta name="description" content="One assistant that never closes. Mobile, web, or branch kiosk. A Future Banking entry for the PPCBank Internal AI Contest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --grid:#BFC5CC;
-    --grid-soft:#DDE1E6;
-    --head:#D6DAE0;
-    --calc:#F0F2F4;
-    --ink:#1B1F26;
-    --soft:#6A727C;
-    --red:#C0392B;
-    --orange:#D07000;
-    --green:#1B7F4C;
-    --blue:#1D4FD8;
-    --font:"Aptos","Calibri","Segoe UI",Arial,"Helvetica Neue",sans-serif;
+    --night:#08152A;
+    --deep:#0F2444;
+    --blue:#1B3C70;
+    --day:#2A5596;
+    --dawn:#8AA3C9;
+    --paper:#EEF2F8;
+    --line:#DCE3EF;
+    --ink:#0B1A30;
+    --ink-soft:#425874;
+    --gold:#F0B429;
   }
+
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
+
   body{
-    margin:0;background:#fff;color:var(--ink);font-family:var(--font);
-    font-size:12px;line-height:1.4;-webkit-font-smoothing:antialiased;
-  }
-  .page{padding:18px 16px 40px}
-
-  h1{font-size:16px;font-weight:700;letter-spacing:.02em;margin:0 0 4px}
-  .sub{font-size:11px;color:var(--soft);margin:0 0 12px}
-  .sub b{color:var(--ink);font-weight:600}
-  .sub .sw{display:inline-block;width:9px;height:9px;border:1px solid var(--grid);vertical-align:-1px;margin:0 3px 0 8px}
-  .sub .sw.g{background:var(--calc)}
-
-  .scroll{overflow-x:auto;border:1px solid var(--grid);-webkit-overflow-scrolling:touch}
-  table{border-collapse:collapse;width:100%;min-width:1500px}
-  th,td{border:1px solid var(--grid-soft);padding:6px 7px;vertical-align:top;text-align:left}
-  thead th{
-    background:var(--head);border-color:var(--grid);font-size:11px;font-weight:700;
-    position:sticky;top:0;z-index:3;white-space:nowrap;line-height:1.25;
-  }
-  tbody tr:hover td{background:#F7F9FB}
-  tbody tr:hover td.calc{background:#EAEDF0}
-  td.calc{background:var(--calc)}
-
-  /* column sizing */
-  .w-no{width:34px;text-align:center;color:var(--soft);font-weight:600}
-  .w-title{min-width:210px;font-weight:600}
-  .w-desc{min-width:290px;color:#333A44}
-  .w-remark{min-width:300px;color:#333A44}
-  .w-type{width:96px;white-space:nowrap}
-  .w-date{width:88px;white-space:nowrap;text-align:center}
-  .w-who{width:96px;white-space:nowrap}
-  .w-team{width:120px}
-  .w-pct{width:78px}
-  .w-status{width:92px;white-space:nowrap}
-  .w-left{width:80px;white-space:nowrap;text-align:center;font-weight:700}
-
-  /* sticky first two columns on desktop */
-  @media (min-width:900px){
-    th.w-no,td.w-no{position:sticky;left:0;z-index:2;background:#fff}
-    thead th.w-no{z-index:4;background:var(--head)}
-    th.w-title,td.w-title{position:sticky;left:34px;z-index:2;background:#fff;
-      box-shadow:1px 0 0 var(--grid)}
-    thead th.w-title{z-index:4;background:var(--head)}
-    tbody tr:hover td.w-no,tbody tr:hover td.w-title{background:#F7F9FB}
+    margin:0;
+    background:var(--night);
+    font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
   }
 
-  .tag{font-weight:700;white-space:nowrap}
-  .t-red{color:var(--red)} .t-orange{color:var(--orange)}
-  .t-green{color:var(--green)} .t-blue{color:var(--blue)} .t-soft{color:var(--soft);font-weight:500}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 
-  .urg{
-    display:inline-block;margin-top:4px;font-size:10px;font-weight:700;color:#fff;
-    background:var(--red);padding:1px 6px;border-radius:3px;letter-spacing:.02em;
+  .sheet{max-width:64rem;margin:0 auto}
+
+  .band{padding:clamp(1.75rem,3.4vw,2.75rem) clamp(1.25rem,4vw,2.75rem)}
+
+  .top{background:linear-gradient(170deg,var(--night) 0%,var(--deep) 100%)}
+  .middle{background:linear-gradient(180deg,var(--deep) 0%,var(--blue) 100%)}
+  .rules-band{background:linear-gradient(180deg,var(--blue) 0%,var(--day) 100%)}
+  .close{background:linear-gradient(180deg,var(--day) 0%,var(--dawn) 38%,var(--paper) 78%,var(--paper) 100%);color:var(--ink)}
+
+  h1,h2,h3{margin:0;letter-spacing:-0.025em;line-height:1.12}
+  p{margin:0}
+
+  /* --- masthead --- */
+
+  .crest{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.3rem 1.1rem;
+    align-items:baseline;
+    font-size:0.8rem;
+    margin-bottom:clamp(1.5rem,3.5vw,2.5rem);
+  }
+  .crest b{font-weight:600}
+  .crest span{opacity:0.6}
+
+  .masthead{
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    gap:clamp(1.25rem,3vw,3rem);
+    align-items:end;
   }
 
-  /* percentage bar */
-  .pct-n{font-weight:700;font-size:11.5px}
-  .pbar{height:6px;background:#E1E4E8;border-radius:3px;margin-top:4px;overflow:hidden}
-  .pfill{height:100%;border-radius:3px}
+  h1{
+    font-size:clamp(2.1rem,1.1rem + 4.2vw,3.6rem);
+    font-weight:700;
+    max-width:11ch;
+  }
+  h1 em{
+    display:block;
+    font-style:normal;
+    font-weight:400;
+    font-size:0.42em;
+    letter-spacing:-0.01em;
+    line-height:1.35;
+    color:var(--gold);
+    margin-top:0.7rem;
+    max-width:24ch;
+  }
 
-  .note{margin-top:14px;font-size:11px;color:var(--soft);line-height:1.75}
-  .note b{color:var(--ink)}
-  .note .k{display:inline-block;margin-right:14px}
-  .swatch{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+  .standfirst{font-size:0.98rem;opacity:0.88;max-width:34ch;padding-bottom:0.3rem}
 
-  @media (max-width:899px){
-    .page{padding:14px 10px 32px}
-    table{min-width:1250px}
-    th,td{padding:5px 6px;font-size:11.5px}
+  .status{
+    margin-top:clamp(1.5rem,3vw,2.25rem);
+    padding-top:0.85rem;
+    border-top:1px solid rgba(240,180,41,0.32);
+    font-size:0.92rem;
+    max-width:62ch;
+  }
+  .status b{color:var(--gold);font-weight:600}
+
+  /* --- transcript + capabilities --- */
+
+  .split{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(1.5rem,3.5vw,3rem);
+  }
+
+  h2{
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--gold);
+    margin-bottom:1rem;
+    letter-spacing:0;
+  }
+
+  .turn{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:0.85rem;margin-bottom:0.75rem}
+  .turn:last-child{margin-bottom:0}
+
+  .stamp{
+    font-size:0.75rem;
+    font-variant-numeric:tabular-nums;
+    opacity:0.55;
+    padding-top:0.65rem;
+    line-height:1.3;
+  }
+
+  .bubble{
+    padding:0.6rem 0.85rem;
+    border-radius:12px 12px 12px 3px;
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.14);
+    font-size:0.93rem;
+  }
+  .agent .bubble{
+    background:rgba(240,180,41,0.1);
+    border-color:rgba(240,180,41,0.35);
+  }
+
+  .does{list-style:none;margin:0;padding:0}
+  .does li{
+    padding:0.75rem 0;
+    border-top:1px solid rgba(255,255,255,0.17);
+    font-size:0.92rem;
+    opacity:0.86;
+  }
+  .does li:last-child{border-bottom:1px solid rgba(255,255,255,0.17)}
+  .does b{display:block;font-weight:600;opacity:1;margin-bottom:0.1rem;font-size:0.95rem}
+
+  /* --- guardrails --- */
+
+  .rules-band h2{margin-bottom:0.55rem}
+  .rules-lead{font-size:0.95rem;max-width:60ch;margin-bottom:1.1rem;opacity:0.9}
+
+  .rules{
+    list-style:none;margin:0;padding:0;
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:0 1.5rem;
+  }
+  .rules li{
+    padding-top:0.8rem;
+    border-top:1px solid rgba(255,255,255,0.24);
+    font-size:0.85rem;
+    opacity:0.85;
+  }
+  .rules b{display:block;color:var(--gold);opacity:1;font-weight:600;margin-bottom:0.15rem}
+
+  /* --- close --- */
+
+  .close h2{color:#fff}
+
+  .ticket{
+    background:#fff;
+    border-radius:5px;
+    padding:1.15rem 1.25rem;
+    box-shadow:0 18px 40px -18px rgba(8,21,42,0.5);
+    max-width:22rem;
+  }
+  .ticket h3{font-size:1.02rem;font-weight:600;margin-bottom:0.9rem}
+  .ticket dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0.4rem 1.1rem;font-size:0.9rem}
+  .ticket dt{color:var(--ink-soft)}
+  .ticket dd{margin:0;font-weight:500}
+
+  .why h3{
+    font-size:clamp(1.2rem,0.95rem + 1vw,1.65rem);
+    font-weight:600;
+    margin-bottom:0.7rem;
+  }
+  .why p{color:var(--ink-soft);font-size:0.95rem;max-width:44ch}
+
+  .gains{list-style:none;margin:1rem 0 0;padding:0}
+  .gains li{
+    padding:0.6rem 0;
+    border-top:1px solid var(--line);
+    font-size:0.9rem;
+    color:var(--ink-soft);
+  }
+  .gains li:last-child{border-bottom:1px solid var(--line)}
+  .gains b{color:var(--ink);font-weight:600}
+
+  .footnote{
+    background:var(--paper);
+    color:var(--ink-soft);
+    font-size:0.78rem;
+    padding:0 clamp(1.25rem,4vw,2.75rem) 1.75rem;
+  }
+  .footnote p{max-width:70ch}
+  .footnote b{color:var(--ink);font-weight:600}
+
+  /* --- responsive --- */
+
+  @media (max-width:820px){
+    .masthead,.split{grid-template-columns:1fr;gap:1.25rem}
+    .masthead{align-items:start}
+    .rules{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.25rem}
+    .standfirst{max-width:46ch;padding-bottom:0}
+    h1{max-width:none}
+  }
+
+  @media (max-width:520px){
+    .rules{grid-template-columns:1fr}
+    .turn{grid-template-columns:3.8rem minmax(0,1fr);gap:0.6rem}
+  }
+
+  /* --- print: one sheet --- */
+
+  @media print{
+    body{font-size:9.4pt;background:#fff}
+    .band{padding:0.5rem 0.75rem}
+    .top,.middle,.rules-band,.close{background:#fff !important;color:#000 !important}
+    .crest span,.stamp,.does li,.rules li,.standfirst{opacity:1;color:#333}
+    h2,.status b,.rules b,h1 em{color:#8a6100 !important}
+    .bubble{background:#f4f6fa !important;border-color:#ccd5e4 !important}
+    .ticket{box-shadow:none;border:1px solid #ccd5e4}
+    .close h2{color:#8a6100 !important}
+    @page{margin:12mm}
   }
 </style>
 </head>
 <body>
-<div class="page">
+<div class="sheet">
 
-  <h1>SAP × ITD — PROJECT TASK PROCESSING</h1>
-  <p class="sub" id="sub"></p>
+  <header class="band top">
+    <div class="crest">
+      <b>PPCBank Internal AI Contest</b>
+      <span>Category: Future Banking</span>
+    </div>
 
-  <div class="scroll">
-    <table>
-      <thead>
-        <tr>
-          <th class="w-no">No</th>
-          <th class="w-title">Title</th>
-          <th class="w-desc">Description</th>
-          <th class="w-type">Type</th>
-          <th class="w-date">Raised Date</th>
-          <th class="w-date">Due Date</th>
-          <th class="w-date">Deploy Date</th>
-          <th class="w-status">Due Status</th>
-          <th class="w-who">In-charge</th>
-          <th class="w-status">Status</th>
-          <th class="w-pct">Percentage</th>
-          <th class="w-remark">Remark</th>
-          <th class="w-team">Team / Dept</th>
-          <th class="w-left">Days Left</th>
-        </tr>
-      </thead>
-      <tbody id="rows"></tbody>
-    </table>
+    <div class="masthead">
+      <h1>AI Banking Agent<em>One assistant that never closes</em></h1>
+      <p class="standfirst">Mobile, web, or branch kiosk. It understands what the customer wants and completes the next step, at any hour.</p>
+    </div>
+
+    <p class="status">Today a simple question costs a customer three trips: a call center queue, a product brochure, a branch visit. Below, one customer opens the app at <b>02:14</b> — the call center is closed and the branch opens in seven hours.</p>
+  </header>
+
+  <section class="band middle">
+    <div class="split">
+
+      <div>
+        <h2>The conversation</h2>
+
+        <div class="turn customer">
+          <p class="stamp">02:14</p>
+          <p class="bubble">How much is left in my account?</p>
+        </div>
+        <div class="turn agent">
+          <p class="stamp">02:14</p>
+          <p class="bubble">Your current balance is $1,245.60. Last activity: a $40.00 withdrawal yesterday at 9:12 AM.</p>
+        </div>
+        <div class="turn customer">
+          <p class="stamp">02:16</p>
+          <p class="bubble">Which savings account is right for me?</p>
+        </div>
+        <div class="turn agent">
+          <p class="stamp">02:16</p>
+          <p class="bubble">You withdraw often, so regular savings fits better — no monthly fee, withdraw any time. If you can leave the money for 12 months, a fixed deposit pays more interest.</p>
+        </div>
+        <div class="turn customer">
+          <p class="stamp">02:19</p>
+          <p class="bubble">I'd like to meet someone at the branch to open it.</p>
+        </div>
+        <div class="turn agent">
+          <p class="stamp">02:19</p>
+          <p class="bubble">Done. Toul Kork branch, Friday at 9:00 AM, for account opening. Please bring your ID card.</p>
+        </div>
+      </div>
+
+      <div>
+        <h2>What it does</h2>
+        <ul class="does">
+          <li><b>Knows the customer</b>Reads a sample account balance and recent activity in a safe demo, so the customer feels this is my bank, talking to me.</li>
+          <li><b>Explains products in plain language</b>Fees, benefits, eligibility, and a straight comparison of the options that actually apply — not a long PDF.</li>
+          <li><b>Books the branch visit</b>Reserves a slot with date, time, and purpose: onboarding, loan advice, or card pickup, plus a confirmation the customer keeps.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="band rules-band">
+    <h2>Staff stay in control</h2>
+    <p class="rules-lead">The agent drafts and guides; it does not decide. Every path that touches money, risk, or a customer record stops at a person.</p>
+    <ul class="rules">
+      <li><b>Read only</b>Balances come from a sample account in the demo build.</li>
+      <li><b>Draft, not send</b>Advice and appointment details are prepared for staff to confirm.</li>
+      <li><b>Approval gate</b>Anything that moves money waits for human sign-off.</li>
+      <li><b>Logged</b>Every conversation is reviewable, so staff see what was said.</li>
+    </ul>
+  </section>
+
+  <section class="band close">
+    <div class="split">
+      <div>
+        <h2>Seven hours later, the branch is expecting her</h2>
+        <div class="ticket">
+          <h3>Appointment confirmed</h3>
+          <dl>
+            <dt>Branch</dt><dd>Toul Kork</dd>
+            <dt>Date</dt><dd>Friday, 12 September</dd>
+            <dt>Time</dt><dd>9:00 AM</dd>
+            <dt>Purpose</dt><dd>Account opening</dd>
+            <dt>Bring</dt><dd>National ID card</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="why">
+        <h3>Why it matters for PPCBank</h3>
+        <p>Not three separate tools bolted together — one Future Banking experience that changes what a branch visit is for.</p>
+        <ul class="gains">
+          <li><b>The bank is open at 2 AM.</b> Questions get answered when customers have them.</li>
+          <li><b>Product education that lands.</b> Plain language, with the comparison needed to decide.</li>
+          <li><b>A shorter path to the appointment.</b> The customer arrives informed, with a purpose recorded.</li>
+          <li><b>The branch becomes a conversation, not a queue.</b> Staff spend time on high-value advice.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="footnote">
+    <p><b>Demonstration data.</b> All figures, accounts, and appointments shown are samples. No live customer account is read or changed in the demo build.</p>
   </div>
 
-  <div class="note">
-    <b>Status</b>
-    <span class="k"><span class="swatch" style="background:#D07000"></span>Process — IT is building</span>
-    <span class="k"><span class="swatch" style="background:#1D4FD8"></span>Testing — we test on CBS</span>
-    <span class="k"><span class="swatch" style="background:#C0392B"></span>Waiting — stuck, need a reply</span>
-    <span class="k"><span class="swatch" style="background:#1B7F4C"></span>Done — live on production</span>
-    <br>
-    <b>Grey columns are calculated automatically</b> from the Due Date — Due Status and Days Left update by themselves each day. Do not type in them.<br>
-    <b>Confidential.</b> For bank staff only. Do not put this page on a public website.
-  </div>
 </div>
-
-<script>
-/* ===========================================================
-   EDIT HERE. Only fill the white columns.
-   Due Status and Days Left calculate themselves.
-   status: "process" | "testing" | "waiting" | "done"
-   Dates must be written as DD/MM/YYYY, or null if not set.
-   =========================================================== */
-const TODAY = "24/08/2026";
-
-const ITEMS = [
-  { no:1,
-    title:"Inventory Loan — Car Dealer",
-    desc:"Set up the inventory loan product for car dealers in CBS.",
-    type:"Enhancement", raised:null, due:null, deploy:null,
-    who:"Bong Bunsin", status:"waiting", pct:40,
-    remark:"IT is building it but is making changes now. Waiting for SAP to send back the revision. Bong Sina is finishing her part.",
-    team:"SAP / ITD" },
-
-  { no:2,
-    title:"Popup alert — loan arrears & maturity credit review",
-    desc:"Show a popup notification to staff when a loan is in arrears or the maturity credit review is due.",
-    type:"New Feature", raised:null, due:null, deploy:null,
-    who:"Bong Narin", status:"process", pct:50, urgent:"AUDIT URGENT",
-    remark:"SAP already submitted the OFL. Development by ITD is in progress.",
-    team:"SIT / ITD" },
-
-  { no:3,
-    title:"Pending interest processing",
-    desc:"Improve how the system processes pending interest on loan accounts.",
-    type:"Enhancement", raised:"06/08/2026", due:"26/08/2026", deploy:null,
-    who:"Bong Bunsin", status:"waiting", pct:20, urgent:"SAP URGENT",
-    remark:"ITD asked for clarification on the screen logic. LPU will revise the document and send a reply email. Raised in the meeting on 06/08/2026.",
-    team:"SIT / LPU" },
-
-  { no:4,
-    title:"LAD schedule & GL posting",
-    desc:"Improve the LAD repayment schedule and the related GL posting entries.",
-    type:"Enhancement", raised:null, due:null, deploy:null,
-    who:"Bong Bunsin", status:"process", pct:50,
-    remark:"Development by ITD is in progress. No testing date confirmed yet.",
-    team:"SIT / ITD" },
-
-  { no:5,
-    title:"Merchant Loan — remove credit review step",
-    desc:"Remove the credit review step from the post-enhance Merchant Loan flow.",
-    type:"Enhancement", raised:null, due:null, deploy:null,
-    who:"Bong Bunsin", status:"process", pct:45, urgent:"CREDIT REVIEW URGENT",
-    remark:"Development by ITD is in progress. ITD is still reviewing the design.",
-    team:"SIT / ITD" },
-
-  { no:6,
-    title:"Close SME branch — move listing & GL to HLM",
-    desc:"Terminate the SME branch and transfer the loan listing and GL balances to the HLM branch code.",
-    type:"Branch Change", raised:null, due:"21/08/2026", deploy:null,
-    who:"Bong Bunsin", status:"testing", pct:85,
-    remark:"SAP received the OFL. ITD deployed it on UAT. SAP is testing on CBS now. Testing date has already passed — please confirm the new date.",
-    team:"SIT / ITD" },
-
-  { no:7,
-    title:"Renewal Loan Yes/No screen",
-    desc:"Improve the Yes/No selection screen used when renewing a loan.",
-    type:"Enhancement", raised:null, due:null, deploy:null,
-    who:"Bong Bunsin", status:"process", pct:50,
-    remark:"SAP already submitted the OFL. Development by ITD is in progress.<br>ITD is still reviewing the design.",
-    team:"SIT / ITD" },
-
-  { no:8,
-    title:"Change repayment mode in schedule",
-    desc:"Correct the repayment mode on the schedule where the branch selected the wrong option.",
-    type:"Data Fix", raised:null, due:"24/08/2026", deploy:null,
-    who:"Bong Bunsin", status:"testing", pct:85,
-    remark:"SAP received the OFL. ITD deployed it on UAT. SAP is testing on CBS today.",
-    team:"SIT / ITD" }
-];
-
-/* ---------- helpers ---------- */
-const STATUS = {
-  process:{ label:"Process", cls:"t-orange", bar:"#D07000" },
-  testing:{ label:"Testing", cls:"t-blue",   bar:"#1D4FD8" },
-  waiting:{ label:"Waiting", cls:"t-red",    bar:"#C0392B" },
-  done:   { label:"Done",    cls:"t-green",  bar:"#1B7F4C" }
-};
-
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const toDate = d => { const [a,b,c] = d.split("/"); return new Date(+c, +b-1, +a); };
-const todayD = toDate(TODAY);
-const daysBetween = d => Math.round((toDate(d) - todayD) / 86400000);
-
-function dueStatus(due){
-  if (!due) return { text:"No date", cls:"t-soft" };
-  const d = daysBetween(due);
-  if (d < 0)  return { text:"Overdue",  cls:"t-red" };
-  if (d === 0) return { text:"Due today", cls:"t-red" };
-  if (d <= 7) return { text:"Due soon",  cls:"t-orange" };
-  return { text:"On track", cls:"t-green" };
-}
-
-function daysLeft(due){
-  if (!due) return { text:"—", cls:"t-soft" };
-  const d = daysBetween(due);
-  if (d < 0)   return { text:Math.abs(d) + " d late", cls:"t-red" };
-  if (d === 0) return { text:"Today", cls:"t-red" };
-  if (d <= 7)  return { text:d + " d left", cls:"t-orange" };
-  return { text:d + " d left", cls:"t-green" };
-}
-
-/* ---------- subtitle ---------- */
-const overdue = ITEMS.filter(i => i.due && daysBetween(i.due) < 0 && i.status !== "done").length;
-document.getElementById("sub").innerHTML =
-  `Live status of SAP and ITD collaboration requests &nbsp;|&nbsp; Updated: <b>${esc(TODAY)}</b> ` +
-  `&nbsp;|&nbsp; Total: <b>${ITEMS.length}</b> &nbsp;|&nbsp; Overdue: <b class="t-red">${overdue}</b>` +
-  `&nbsp;|&nbsp;<span class="sw"></span>type here <span class="sw g"></span>calculated`;
-
-/* ---------- rows ---------- */
-document.getElementById("rows").innerHTML = ITEMS.map(i => {
-  const st = STATUS[i.status];
-  const ds = dueStatus(i.due);
-  const dl = daysLeft(i.due);
-
-  return `<tr>
-    <td class="w-no">${i.no}</td>
-    <td class="w-title">${esc(i.title)}${i.urgent ? `<br><span class="urg">${esc(i.urgent)}</span>` : ""}</td>
-    <td class="w-desc">${esc(i.desc)}</td>
-    <td class="w-type">${esc(i.type)}</td>
-    <td class="w-date">${i.raised ? esc(i.raised) : `<span class="t-soft">—</span>`}</td>
-    <td class="w-date">${i.due ? esc(i.due) : `<span class="t-soft">Not set</span>`}</td>
-    <td class="w-date">${i.deploy ? esc(i.deploy) : `<span class="t-soft">Not set</span>`}</td>
-    <td class="w-status calc"><span class="tag ${ds.cls}">${ds.text}</span></td>
-    <td class="w-who">${esc(i.who)}</td>
-    <td class="w-status"><span class="tag ${st.cls}">${st.label}</span></td>
-    <td class="w-pct">
-      <div class="pct-n">${i.pct}%</div>
-      <div class="pbar"><div class="pfill" style="width:${i.pct}%;background:${st.bar}"></div></div>
-    </td>
-    <td class="w-remark">${esc(i.remark).replace(/&lt;br&gt;/g, "<br>")}</td>
-    <td class="w-team">${esc(i.team)}</td>
-    <td class="w-left calc"><span class="${dl.cls}">${dl.text}</span></td>
-  </tr>`;
-}).join("");
-</script>
 </body>
 </html>
