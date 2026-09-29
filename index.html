@@ -2,346 +2,381 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Banking Agent — PPCBank Internal AI Contest</title>
-<meta name="description" content="One assistant that never closes. Mobile, web, or branch kiosk. A Future Banking entry for the PPCBank Internal AI Contest.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ITD × SAP — In-progress requests</title>
 <style>
   :root{
-    --night:#08152A;
-    --deep:#0F2444;
-    --blue:#1B3C70;
-    --day:#2A5596;
-    --dawn:#8AA3C9;
-    --paper:#EEF2F8;
-    --line:#DCE3EF;
-    --ink:#0B1A30;
-    --ink-soft:#425874;
-    --gold:#F0B429;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+
+    --paper:#ffffff;
+    --ground:#f3f5f8;
+    --ink:#0c2152;
+    --ink-soft:#4a5771;
+    --ink-faint:#8c97ac;
+    --rule:#dfe4ec;
+    --accent:#0d4a9a;
+    --urgent:#b3261e;
+    --urgent-bg:#fdecea;
+    --audit:#8a5300;
+    --audit-bg:#fdf1de;
+    --ok:#0f6b4f;
+    --ok-bg:#e4f3ec;
   }
-
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#111725;
+      --ground:#0a0f19;
+      --ink:#e7ecf6;
+      --ink-soft:#a5b0c6;
+      --ink-faint:#6d7a93;
+      --rule:#25304a;
+      --accent:#6aa4ff;
+      --urgent:#ff9b92;
+      --urgent-bg:#3a1a17;
+      --audit:#f0c274;
+      --audit-bg:#3a2a10;
+      --ok:#7fd6b2;
+      --ok-bg:#12332a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#111725;
+    --ground:#0a0f19;
+    --ink:#e7ecf6;
+    --ink-soft:#a5b0c6;
+    --ink-faint:#6d7a93;
+    --rule:#25304a;
+    --accent:#6aa4ff;
+    --urgent:#ff9b92;
+    --urgent-bg:#3a1a17;
+    --audit:#f0c274;
+    --audit-bg:#3a2a10;
+    --ok:#7fd6b2;
+    --ok-bg:#12332a;
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
   body{
     margin:0;
-    background:var(--night);
-    font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
     font-size:15px;
-    line-height:1.55;
-    color:#fff;
-    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+    -webkit-text-size-adjust:100%;
   }
+  .shell{max-width:1180px;margin:0 auto;padding:28px 20px 64px}
 
-  :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-
-  .sheet{max-width:64rem;margin:0 auto}
-
-  .band{padding:clamp(1.75rem,3.4vw,2.75rem) clamp(1.25rem,4vw,2.75rem)}
-
-  .top{background:linear-gradient(170deg,var(--night) 0%,var(--deep) 100%)}
-  .middle{background:linear-gradient(180deg,var(--deep) 0%,var(--blue) 100%)}
-  .rules-band{background:linear-gradient(180deg,var(--blue) 0%,var(--day) 100%)}
-  .close{background:linear-gradient(180deg,var(--day) 0%,var(--dawn) 38%,var(--paper) 78%,var(--paper) 100%);color:var(--ink)}
-
-  h1,h2,h3{margin:0;letter-spacing:-0.025em;line-height:1.12}
-  p{margin:0}
-
-  /* --- masthead --- */
-
-  .crest{
-    display:flex;
-    flex-wrap:wrap;
-    gap:0.3rem 1.1rem;
-    align-items:baseline;
-    font-size:0.8rem;
-    margin-bottom:clamp(1.5rem,3.5vw,2.5rem);
+  header.top{
+    display:flex;flex-wrap:wrap;gap:18px 32px;align-items:flex-end;justify-content:space-between;
+    border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:6px;
   }
-  .crest b{font-weight:600}
-  .crest span{opacity:0.6}
+  .title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.015em}
+  .title span{color:var(--accent)}
+  .subtitle{margin:4px 0 0;color:var(--ink-soft);font-size:14px}
+  .tally{display:flex;gap:26px;margin:0;padding:0;list-style:none}
+  .tally div{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+  .tally span{font-size:12.5px;color:var(--ink-faint)}
 
-  .masthead{
-    display:grid;
-    grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
-    gap:clamp(1.25rem,3vw,3rem);
-    align-items:end;
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 14px}
+  input[type=search]{
+    flex:1 1 220px;min-width:0;padding:9px 12px;border:1px solid var(--rule);border-radius:7px;
+    background:var(--paper);color:inherit;font:inherit;
   }
-
-  h1{
-    font-size:clamp(2.1rem,1.1rem + 4.2vw,3.6rem);
-    font-weight:700;
-    max-width:11ch;
+  input[type=search]:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  button.chip{
+    padding:8px 14px;border:1px solid var(--rule);border-radius:7px;background:var(--paper);
+    color:var(--ink-soft);font:inherit;font-size:13.5px;cursor:pointer;
   }
-  h1 em{
-    display:block;
-    font-style:normal;
-    font-weight:400;
-    font-size:0.42em;
-    letter-spacing:-0.01em;
-    line-height:1.35;
-    color:var(--gold);
-    margin-top:0.7rem;
-    max-width:24ch;
+  button.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+  .scroller{overflow-x:auto;background:var(--paper);border:1px solid var(--rule);border-radius:10px}
+  table{border-collapse:collapse;width:100%;min-width:900px}
+  thead th{
+    position:sticky;top:0;z-index:1;background:var(--paper);
+    text-align:left;font-size:12.5px;font-weight:600;color:var(--ink-faint);
+    padding:12px 14px;border-bottom:1px solid var(--rule);white-space:nowrap;
   }
-
-  .standfirst{font-size:0.98rem;opacity:0.88;max-width:34ch;padding-bottom:0.3rem}
-
-  .status{
-    margin-top:clamp(1.5rem,3vw,2.25rem);
-    padding-top:0.85rem;
-    border-top:1px solid rgba(240,180,41,0.32);
-    font-size:0.92rem;
-    max-width:62ch;
+  tbody td{padding:14px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14px}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr.flagged td:first-child{box-shadow:inset 3px 0 0 var(--urgent)}
+  tbody tr.audit td:first-child{box-shadow:inset 3px 0 0 var(--audit)}
+  td.num{color:var(--ink-faint);font-variant-numeric:tabular-nums;width:44px}
+  td.request{min-width:290px}
+  .name{font-weight:600;line-height:1.35}
+  .note{margin:6px 0 0;color:var(--ink-soft);font-size:13px}
+  .note li{margin:2px 0}
+  ul.note{padding-left:16px}
+  .sub{
+    margin-top:9px;padding-left:11px;border-left:2px solid var(--rule);
+    font-size:13px;color:var(--ink-soft);
   }
-  .status b{color:var(--gold);font-weight:600}
-
-  /* --- transcript + capabilities --- */
-
-  .split{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:clamp(1.5rem,3.5vw,3rem);
+  .sub b{color:var(--ink);font-weight:600}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .tag{font-size:11.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--rule);color:var(--ink-soft)}
+  .tag.urgent{background:var(--urgent-bg);border-color:transparent;color:var(--urgent);font-weight:600}
+  .tag.audit{background:var(--audit-bg);border-color:transparent;color:var(--audit);font-weight:600}
+  .ticket{font-variant-numeric:tabular-nums;font-weight:600}
+  .ticket.none{font-weight:400;color:var(--ink-faint)}
+  .owner{display:block;margin-bottom:5px;white-space:nowrap}
+  .owner:last-child{margin-bottom:0}
+  .stage{
+    display:inline-block;margin-left:6px;font-size:11.5px;padding:1px 7px;border-radius:4px;
+    background:var(--ground);color:var(--ink-soft);border:1px solid var(--rule);
   }
-
-  h2{
-    font-size:0.82rem;
-    font-weight:600;
-    color:var(--gold);
-    margin-bottom:1rem;
-    letter-spacing:0;
-  }
-
-  .turn{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:0.85rem;margin-bottom:0.75rem}
-  .turn:last-child{margin-bottom:0}
-
-  .stamp{
-    font-size:0.75rem;
-    font-variant-numeric:tabular-nums;
-    opacity:0.55;
-    padding-top:0.65rem;
-    line-height:1.3;
-  }
-
-  .bubble{
-    padding:0.6rem 0.85rem;
-    border-radius:12px 12px 12px 3px;
-    background:rgba(255,255,255,0.07);
-    border:1px solid rgba(255,255,255,0.14);
-    font-size:0.93rem;
-  }
-  .agent .bubble{
-    background:rgba(240,180,41,0.1);
-    border-color:rgba(240,180,41,0.35);
-  }
-
-  .does{list-style:none;margin:0;padding:0}
-  .does li{
-    padding:0.75rem 0;
-    border-top:1px solid rgba(255,255,255,0.17);
-    font-size:0.92rem;
-    opacity:0.86;
-  }
-  .does li:last-child{border-bottom:1px solid rgba(255,255,255,0.17)}
-  .does b{display:block;font-weight:600;opacity:1;margin-bottom:0.1rem;font-size:0.95rem}
-
-  /* --- guardrails --- */
-
-  .rules-band h2{margin-bottom:0.55rem}
-  .rules-lead{font-size:0.95rem;max-width:60ch;margin-bottom:1.1rem;opacity:0.9}
-
-  .rules{
-    list-style:none;margin:0;padding:0;
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:0 1.5rem;
-  }
-  .rules li{
-    padding-top:0.8rem;
-    border-top:1px solid rgba(255,255,255,0.24);
-    font-size:0.85rem;
-    opacity:0.85;
-  }
-  .rules b{display:block;color:var(--gold);opacity:1;font-weight:600;margin-bottom:0.15rem}
-
-  /* --- close --- */
-
-  .close h2{color:#fff}
-
-  .ticket{
-    background:#fff;
-    border-radius:5px;
-    padding:1.15rem 1.25rem;
-    box-shadow:0 18px 40px -18px rgba(8,21,42,0.5);
-    max-width:22rem;
-  }
-  .ticket h3{font-size:1.02rem;font-weight:600;margin-bottom:0.9rem}
-  .ticket dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0.4rem 1.1rem;font-size:0.9rem}
-  .ticket dt{color:var(--ink-soft)}
-  .ticket dd{margin:0;font-weight:500}
-
-  .why h3{
-    font-size:clamp(1.2rem,0.95rem + 1vw,1.65rem);
-    font-weight:600;
-    margin-bottom:0.7rem;
-  }
-  .why p{color:var(--ink-soft);font-size:0.95rem;max-width:44ch}
-
-  .gains{list-style:none;margin:1rem 0 0;padding:0}
-  .gains li{
-    padding:0.6rem 0;
-    border-top:1px solid var(--line);
-    font-size:0.9rem;
-    color:var(--ink-soft);
-  }
-  .gains li:last-child{border-bottom:1px solid var(--line)}
-  .gains b{color:var(--ink);font-weight:600}
-
-  .footnote{
-    background:var(--paper);
-    color:var(--ink-soft);
-    font-size:0.78rem;
-    padding:0 clamp(1.25rem,4vw,2.75rem) 1.75rem;
-  }
-  .footnote p{max-width:70ch}
-  .footnote b{color:var(--ink);font-weight:600}
-
-  /* --- responsive --- */
-
-  @media (max-width:820px){
-    .masthead,.split{grid-template-columns:1fr;gap:1.25rem}
-    .masthead{align-items:start}
-    .rules{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.25rem}
-    .standfirst{max-width:46ch;padding-bottom:0}
-    h1{max-width:none}
-  }
-
-  @media (max-width:520px){
-    .rules{grid-template-columns:1fr}
-    .turn{grid-template-columns:3.8rem minmax(0,1fr);gap:0.6rem}
-  }
-
-  /* --- print: one sheet --- */
-
-  @media print{
-    body{font-size:9.4pt;background:#fff}
-    .band{padding:0.5rem 0.75rem}
-    .top,.middle,.rules-band,.close{background:#fff !important;color:#000 !important}
-    .crest span,.stamp,.does li,.rules li,.standfirst{opacity:1;color:#333}
-    h2,.status b,.rules b,h1 em{color:#8a6100 !important}
-    .bubble{background:#f4f6fa !important;border-color:#ccd5e4 !important}
-    .ticket{box-shadow:none;border:1px solid #ccd5e4}
-    .close h2{color:#8a6100 !important}
-    @page{margin:12mm}
+  .done{color:var(--ok);background:var(--ok-bg);border-color:transparent;font-weight:600}
+  td.when{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .tbd{color:var(--ink-faint)}
+  .empty{padding:28px 14px;color:var(--ink-soft)}
+  footer{margin-top:16px;color:var(--ink-faint);font-size:12.5px}
+  @media (max-width:640px){
+    .shell{padding:18px 12px 48px}
+    .title{font-size:21px}
+    .tally{gap:18px}
   }
 </style>
 </head>
 <body>
-<div class="sheet">
+<div class="shell">
 
-  <header class="band top">
-    <div class="crest">
-      <b>PPCBank Internal AI Contest</b>
-      <span>Category: Future Banking</span>
+  <header class="top">
+    <div>
+      <h1 class="title">ITD <span>×</span> SAP</h1>
+      <p class="subtitle">In-progress collaboration requests</p>
     </div>
-
-    <div class="masthead">
-      <h1>AI Banking Agent<em>One assistant that never closes</em></h1>
-      <p class="standfirst">Mobile, web, or branch kiosk. It understands what the customer wants and completes the next step, at any hour.</p>
-    </div>
-
-    <p class="status">Today a simple question costs a customer three trips: a call center queue, a product brochure, a branch visit. Below, one customer opens the app at <b>02:14</b> — the call center is closed and the branch opens in seven hours.</p>
+    <ul class="tally">
+      <li><div id="count-all">11</div><span>open requests</span></li>
+      <li><div id="count-urgent">5</div><span>flagged urgent</span></li>
+      <li><div id="count-dated">1</div><span>with a set date</span></li>
+    </ul>
   </header>
 
-  <section class="band middle">
-    <div class="split">
-
-      <div>
-        <h2>The conversation</h2>
-
-        <div class="turn customer">
-          <p class="stamp">02:14</p>
-          <p class="bubble">How much is left in my account?</p>
-        </div>
-        <div class="turn agent">
-          <p class="stamp">02:14</p>
-          <p class="bubble">Your current balance is $1,245.60. Last activity: a $40.00 withdrawal yesterday at 9:12 AM.</p>
-        </div>
-        <div class="turn customer">
-          <p class="stamp">02:16</p>
-          <p class="bubble">Which savings account is right for me?</p>
-        </div>
-        <div class="turn agent">
-          <p class="stamp">02:16</p>
-          <p class="bubble">You withdraw often, so regular savings fits better — no monthly fee, withdraw any time. If you can leave the money for 12 months, a fixed deposit pays more interest.</p>
-        </div>
-        <div class="turn customer">
-          <p class="stamp">02:19</p>
-          <p class="bubble">I'd like to meet someone at the branch to open it.</p>
-        </div>
-        <div class="turn agent">
-          <p class="stamp">02:19</p>
-          <p class="bubble">Done. Toul Kork branch, Friday at 9:00 AM, for account opening. Please bring your ID card.</p>
-        </div>
-      </div>
-
-      <div>
-        <h2>What it does</h2>
-        <ul class="does">
-          <li><b>Knows the customer</b>Reads a sample account balance and recent activity in a safe demo, so the customer feels this is my bank, talking to me.</li>
-          <li><b>Explains products in plain language</b>Fees, benefits, eligibility, and a straight comparison of the options that actually apply — not a long PDF.</li>
-          <li><b>Books the branch visit</b>Reserves a slot with date, time, and purpose: onboarding, loan advice, or card pickup, plus a confirmation the customer keeps.</li>
-        </ul>
-      </div>
-
+  <div class="controls">
+    <input type="search" id="search" placeholder="Search request, ticket or handler" aria-label="Search requests">
+    <div class="filters">
+      <button class="chip" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="urgent" aria-pressed="false">Urgent</button>
+      <button class="chip" data-filter="scheduled" aria-pressed="false">Scheduled</button>
     </div>
-  </section>
-
-  <section class="band rules-band">
-    <h2>Staff stay in control</h2>
-    <p class="rules-lead">The agent drafts and guides; it does not decide. Every path that touches money, risk, or a customer record stops at a person.</p>
-    <ul class="rules">
-      <li><b>Read only</b>Balances come from a sample account in the demo build.</li>
-      <li><b>Draft, not send</b>Advice and appointment details are prepared for staff to confirm.</li>
-      <li><b>Approval gate</b>Anything that moves money waits for human sign-off.</li>
-      <li><b>Logged</b>Every conversation is reviewable, so staff see what was said.</li>
-    </ul>
-  </section>
-
-  <section class="band close">
-    <div class="split">
-      <div>
-        <h2>Seven hours later, the branch is expecting her</h2>
-        <div class="ticket">
-          <h3>Appointment confirmed</h3>
-          <dl>
-            <dt>Branch</dt><dd>Toul Kork</dd>
-            <dt>Date</dt><dd>Friday, 12 September</dd>
-            <dt>Time</dt><dd>9:00 AM</dd>
-            <dt>Purpose</dt><dd>Account opening</dd>
-            <dt>Bring</dt><dd>National ID card</dd>
-          </dl>
-        </div>
-      </div>
-
-      <div class="why">
-        <h3>Why it matters for PPCBank</h3>
-        <p>Not three separate tools bolted together — one Future Banking experience that changes what a branch visit is for.</p>
-        <ul class="gains">
-          <li><b>The bank is open at 2 AM.</b> Questions get answered when customers have them.</li>
-          <li><b>Product education that lands.</b> Plain language, with the comparison needed to decide.</li>
-          <li><b>A shorter path to the appointment.</b> The customer arrives informed, with a purpose recorded.</li>
-          <li><b>The branch becomes a conversation, not a queue.</b> Staff spend time on high-value advice.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <div class="footnote">
-    <p><b>Demonstration data.</b> All figures, accounts, and appointments shown are samples. No live customer account is read or changed in the demo build.</p>
   </div>
 
+  <div class="scroller">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Request</th>
+          <th scope="col">Redmine</th>
+          <th scope="col">Developed by</th>
+          <th scope="col">Handler &amp; stage</th>
+          <th scope="col">Testing</th>
+          <th scope="col">Deployment</th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+
+        <tr data-urgent="0" data-scheduled="1">
+          <td class="num">1</td>
+          <td class="request">
+            <div class="name">Housing and Car Disbursement Freeze</div>
+            <ul class="note">
+              <li>SAP received OFL</li>
+              <li>ITD deployed on UAT</li>
+              <li>SAP testing on CBS, ongoing</li>
+            </ul>
+          </td>
+          <td><span class="ticket none">—</span></td>
+          <td>ITD</td>
+          <td><span class="owner">Narin <span class="stage">UAT</span></span></td>
+          <td class="when">28–30 Sep 2026<div class="note">Negative scenarios</div></td>
+          <td class="when">5–9 Oct 2026</td>
+        </tr>
+
+        <tr data-urgent="1" data-scheduled="1" class="flagged">
+          <td class="num">2</td>
+          <td class="request">
+            <div class="name">Enhance pending interest processing</div>
+            <p class="note">Loan waive and loan inquiry accrued list. Revisal by SAP. Started 20 Jul 2026, due 30 Sep 2026.</p>
+            <div class="tags"><span class="tag urgent">SAP urgent</span></div>
+          </td>
+          <td><span class="ticket">5880</span></td>
+          <td>ITD</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when">Due 30 Sep 2026</td>
+        </tr>
+
+        <tr data-urgent="1" data-scheduled="0" class="flagged">
+          <td class="num">3</td>
+          <td class="request">
+            <div class="name">Transfer branch code</div>
+            <p class="note">SAP OFL received.</p>
+            <div class="tags"><span class="tag urgent">SAP urgent</span></div>
+          </td>
+          <td><span class="ticket">6203</span></td>
+          <td>ITD MB</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="1" data-scheduled="0" class="flagged">
+          <td class="num">4</td>
+          <td class="request">
+            <div class="name">Car Plus Loan — new product</div>
+            <p class="note">Design by DBD. SAP sent the finalised product draft, soft copy.</p>
+            <div class="tags"><span class="tag urgent">SAP urgent</span></div>
+          </td>
+          <td><span class="ticket">6066</span></td>
+          <td>DBD design</td>
+          <td>
+            <span class="owner">Puthik <span class="stage">UI</span></span>
+            <span class="owner">Bunsin <span class="stage">SIT</span></span>
+          </td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="0" data-scheduled="0">
+          <td class="num">5</td>
+          <td class="request">
+            <div class="name">Merchant loan application failure</div>
+            <p class="note">Customer applications fail on missing CBC data.</p>
+          </td>
+          <td><span class="ticket">6096</span></td>
+          <td>ITD MB</td>
+          <td>
+            <span class="owner">Seyha <span class="stage">MB UAT</span></span>
+            <span class="owner">Bunsin <span class="stage">SIT</span></span>
+          </td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="0" data-scheduled="0">
+          <td class="num">6</td>
+          <td class="request">
+            <div class="name">LAD product payoff and partial close</div>
+            <p class="note">Fixed and installment accounts.</p>
+          </td>
+          <td><span class="ticket none">—</span></td>
+          <td>ITD CBS</td>
+          <td>
+            <span class="owner">Chhaya <span class="stage done">UI feedback done</span></span>
+            <span class="owner">Narin <span class="stage">SIT</span></span>
+          </td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="0" data-scheduled="0">
+          <td class="num">7</td>
+          <td class="request">
+            <div class="name">Payroll loan freeze in CBS/MB</div>
+          </td>
+          <td><span class="ticket">6139</span></td>
+          <td>ITD</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="0" data-scheduled="0">
+          <td class="num">8</td>
+          <td class="request">
+            <div class="name">Payroll loan maturity payoff in CBS/MB</div>
+            <div class="sub">Subtask — rectify error: payroll loan unable to close · <b>#6210</b></div>
+          </td>
+          <td><span class="ticket">6204</span></td>
+          <td>ITD</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="0" data-scheduled="0">
+          <td class="num">9</td>
+          <td class="request">
+            <div class="name">Error when applying for a payroll loan</div>
+          </td>
+          <td><span class="ticket">6199</span></td>
+          <td>ITD MB</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="1" data-scheduled="0" class="audit">
+          <td class="num">10</td>
+          <td class="request">
+            <div class="name">Popup notification for loan arrear and maturity credit review</div>
+            <div class="tags"><span class="tag audit">Audit urgent</span></div>
+          </td>
+          <td><span class="ticket none">—</span></td>
+          <td>ITD</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+        <tr data-urgent="0" data-scheduled="0">
+          <td class="num">11</td>
+          <td class="request">
+            <div class="name">Reverse staff tax</div>
+            <div class="tags"><span class="tag">SAP internal request</span></div>
+          </td>
+          <td><span class="ticket none">—</span></td>
+          <td>ITD</td>
+          <td><span class="owner">Bunsin <span class="stage">SIT</span></span></td>
+          <td class="when tbd">Not set</td>
+          <td class="when tbd">Not set</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <div class="empty" id="empty" hidden="">No request matches that search.</div>
+  </div>
+
+  <footer>Dates shown as given by the teams. “Not set” means no testing or deployment date has been agreed yet.</footer>
 </div>
+
+<script>
+  const rows = Array.from(document.querySelectorAll('#rows tr'));
+  const search = document.getElementById('search');
+  const empty = document.getElementById('empty');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  let filter = 'all';
+
+  function apply(){
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(r => {
+      const text = r.textContent.toLowerCase();
+      const matchText = !q || text.includes(q);
+      const matchFilter =
+        filter === 'all' ? true :
+        filter === 'urgent' ? r.dataset.urgent === '1' :
+        r.dataset.scheduled === '1';
+      const show = matchText && matchFilter;
+      r.hidden = !show;
+      if (show) shown++;
+    });
+    empty.hidden = shown > 0;
+  }
+
+  search.addEventListener('input', apply);
+  chips.forEach(c => c.addEventListener('click', () => {
+    filter = c.dataset.filter;
+    chips.forEach(o => o.setAttribute('aria-pressed', String(o === c)));
+    apply();
+  }));
+
+  document.getElementById('count-all').textContent = rows.length;
+  document.getElementById('count-urgent').textContent = rows.filter(r => r.dataset.urgent === '1').length;
+  document.getElementById('count-dated').textContent = rows.filter(r => r.dataset.scheduled === '1').length;
+</script>
 </body>
 </html>
